@@ -1,4 +1,4 @@
-const API_KEY = "30a618cfe75581f10b52fa741e973e77";
+const API_KEY = import.meta.env.VITE_WEATHERSTACK_API_KEY;
 const BASE_URL = "http://api.weatherstack.com/current";
 
 export interface WeatherData {
