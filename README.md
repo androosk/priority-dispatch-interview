@@ -1,13 +1,16 @@
-# Weather App
+# Dog Lovers App
 
 ## Introduction
-This Weather App is a React-based web application that allows users to search for current weather conditions in cities around the world. It uses the Weatherstack API to fetch real-time weather data and displays it in a user-friendly interface.
+This Dog Lovers App is a React-based web application that allows users to search for dog images by breed. The user can favorite dog images which saves them to localStorage.
 
 ## Features
-- Search for weather by city name
-- Display current temperature in Fahrenheit
-- Show wind speed in miles per hour
-- Provide additional weather details such as humidity, pressure, and visibility
+- Search for dogs by breed
+- Custom useFavorites() hook to handle hearting and unhearting dog images
+- Auto suggestion of dog breeds in search bar
+- Favorite dog images are saved to localStorage
+- Infinite scroll type effect using lazy loading on scroll
+- Uses the Lucide React library for icons
+- Click an image to open it in a modal
 - Responsive design with a custom background
 
 ## Technologies Used
@@ -15,24 +18,19 @@ This Weather App is a React-based web application that allows users to search fo
 - TypeScript
 - Tailwind CSS
 - Vite
-- Weatherstack API
+- DogCEO API
 
 ## Installation
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/weather-app.git
-   cd weather-app
+   git clone https://github.com/androosk/priority-dispatch-interview.git
+   cd priority-dispatch-interview
    ```
 
 2. Install dependencies:
    ```
    npm install
-   ```
-
-3. Create a `.env` file in the root directory and add your Weatherstack API key:
-   ```
-   VITE_WEATHERSTACK_API_KEY=your_api_key_here
    ```
 
 ## Usage
@@ -44,7 +42,7 @@ This Weather App is a React-based web application that allows users to search fo
 
 2. Open your browser and navigate to `http://localhost:5173` (or the port Vite is running on).
 
-3. Enter a city name in the search bar and press Enter or click the Search button to see the weather information.
+3. Enter a dog breed in the search bar and press Enter or click the Search button to get dog images.
 
 ## Building for Production
 

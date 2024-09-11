@@ -1,26 +1,34 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import SearchForm from "./components/SearchForm";
 import ResultsContainer from "./components/ResultsContainer";
-import { getWeather, WeatherData, WeatherApiError } from "./utils/weatherApi";
+import FavoritesContainer from "./components/FavoritesContainer";
+import { getDogImagesByBreed, ApiResponse } from "./utils/dogApi";
 
 const App: React.FC = () => {
-  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [dogImages, setDogImages] = useState<string[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showFavorites, setShowFavorites] = useState<boolean>(false);
 
   const handleSearch = async (query: string) => {
+    setIsLoading(true);
+    setError(null);
     try {
-      const data = await getWeather(query);
-      setWeatherData(data);
-      setError(null);
+      const data: ApiResponse = await getDogImagesByBreed(query);
+      if (Array.isArray(data.message)) {
+        setDogImages(data.message);
+      } else {
+        throw new Error("Unexpected response format");
+      }
     } catch (err) {
-      setWeatherData(null);
-      if (err instanceof WeatherApiError) {
-        setError(`Failed to fetch weather for ${query}. Please try again.`);
-      } else if (err instanceof Error) {
+      setDogImages(null);
+      if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError("An unexpected error occurred. Please try again.");
+        setError(`Failed to fetch images for ${query}. Please try again.`);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -28,10 +36,23 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-cover bg-sunny-day bg-center bg-no-repeat bg-fixed">
       <div className="container mx-auto p-4">
         <h1 className="text-3xl font-bold mb-4 text-center">
-          Get Current Weather Conditions for Your Location Here!
+          Find Dog Images by Breed!
         </h1>
-        <SearchForm onSearch={handleSearch} />
-        <ResultsContainer weatherData={weatherData} error={error} />
+        <div className="flex flex-col content-center items-center">
+          <SearchForm onSearch={handleSearch} />
+          <button
+            className="flex-shrink-0 bg-blue-500 hover:bg-blue-700 border-blue-500 hover:border-blue-700 text-sm border-4 text-white py-1 px-2 rounded"
+            onClick={() => setShowFavorites(!showFavorites)}
+          >
+            {!showFavorites ? "Show" : "Hide"} Favorites
+          </button>
+        </div>
+        {showFavorites && <FavoritesContainer />}
+        {isLoading ? (
+          <div className="text-center mt-4">Loading...</div>
+        ) : (
+          <ResultsContainer dogImageList={dogImages} error={error} />
+        )}
       </div>
     </div>
   );
